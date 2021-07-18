@@ -15,7 +15,7 @@ known = []
 unknown = []
 wordsfile = open(r'vocab\words.txt', 'r', encoding='utf-8')
 knownfile = open(r'vocab\known.txt', 'r', encoding='utf-8')
-unknownfile = open(r'vocab\known.txt', 'r', encoding='utf-8')
+unknownfile = open(r'vocab\unknown.txt', 'r', encoding='utf-8')
 for word in wordsfile.readlines():
     words.append(word.replace('\n', ''))
 wordsfile.close()
@@ -104,7 +104,7 @@ while not done:
         elif event.type == pygame.VIDEORESIZE:
             type = pygame.FULLSCREEN if fullscreen else pygame.RESIZABLE
             window = pygame.display.set_mode(event.size, type)
-        elif event.type == pygame.KEYDOWN:
+        elif event.type == pygame.KEYDOWN and len(words) >= 1:
             if not fullscreen and event.key == pygame.K_F11:
                 fullscreen = True
                 pygame.event.post(pygame.event.Event(pygame.VIDEORESIZE, size = size))
@@ -118,7 +118,7 @@ while not done:
             elif event.key == pygame.K_LCTRL:
                 pinyin = p.get(word, delimiter='')
             # Show the translation 
-            elif event.key == pygame.K_LSHIFT:
+            elif event.key == pygame.K_LSHIFT and translation == '':
                 try:
                     translation = t.translate(word, 'en')
                 except:
@@ -183,11 +183,25 @@ while not done:
  
     screen.fill(BLACK)
 
-    # The Score Count
-    font = pygame.font.Font('freesansbold.ttf', 35)
-    label = font.render('Score: {}'.format(score), True, WHITE)
+    # The Known Words Count
+    font = pygame.font.Font('fonts\Gentium-R.ttf', 25)
+    label = font.render('Known: {}'.format(len(known)), True, GREY)
     position = label.get_rect()
-    position.center = (90, 40)
+    position.center = (75, 40)
+    screen.blit(label, position)
+
+    # The Unknown Words Count
+    font = pygame.font.Font('fonts\Gentium-R.ttf', 25)
+    label = font.render('Unknown: {}'.format(len(unknown)), True, GREY)
+    position = label.get_rect()
+    position.center = (90, 70)
+    screen.blit(label, position)
+
+    # The New Words Count
+    font = pygame.font.Font('fonts\Gentium-R.ttf', 25)
+    label = font.render('New: {}'.format(len(words)), True, GREY)
+    position = label.get_rect()
+    position.center = (83, 100)
     screen.blit(label, position)
   
     # The Chinese Word

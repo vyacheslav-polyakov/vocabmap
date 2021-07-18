@@ -32,7 +32,7 @@ def findExamples(word):
     file.close()
     examples = re.split("[a-zāáǎàōóǒòēéěèīíìǐūúǔùǖǘǚǜü “”]", string)
     examples = ''.join(examples)
-    examples = examples.split('。')
+    examples = re.split('[。？]', examples)
     file = open(r'vocab\temp.txt', 'w', encoding='utf-8')
     examples_cn = []
     examples_en = []
